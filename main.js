@@ -1,5 +1,4 @@
-// const playerName = prompt("Skriv ditt namn: ")
-const playerName = "Jens" // statiskt så vi slipper prompt varje körning
+const playerName = "Olle"
 let playerHp = 100
 let enemyHp = 100
 
@@ -11,6 +10,12 @@ function rollDice() {
 
 const playerHpElement = document.querySelector("#player-hp")
 const enemyHpElement = document.querySelector("#enemy-hp")
+
+class Enemy {
+    constructor(name, hp, money)
+    this.name = hp
+    this.money = money
+}
 
 function log(message, type) {
     const li = document.createElement("li")
@@ -65,6 +70,14 @@ function gameRound() {
 
     playerHpElement.textContent = playerHp < 1 ? 0 : playerHp
     enemyHpElement.textContent = enemyHp < 1 ? 0 : enemyHp
+}
+
+function.gameloop(timestamp) {
+    if (timestamp >= last + 1000) {
+        gameRound()
+        last = timestamp;
+    }
+    round = window.requestAnimationFrame(gameloop)
 }
 
 const combatLogElement = document.querySelector("#combat-log")
