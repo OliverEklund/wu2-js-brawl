@@ -1,8 +1,8 @@
 const playerName = "Olle"
 let playerHp = 100
-let enemyHp = 50
 
 const playButton = document.querySelector("#play-button")
+const runawayButton = document.querySelector("#runaway-button")
 
 function rollDice() {
     return Math.ceil(Math.random() * 20)
@@ -17,6 +17,18 @@ class Enemy {
     this.name = name
     this.hp = hp
     this.money = money}
+}
+
+function log(message, type) {
+    const li = document.createElement("li")
+    if (type) {3
+        li.classList.add(type)
+    }
+    li.textContent = message
+    combatLogElement.appendChild(li)
+    if (combatLogElement.childNodes.length > 10) {
+        combatLogElement.removeChild(combatLogElement.firstChild)
+    }
 }
 
 function spawnEnemy() {
@@ -39,26 +51,24 @@ function spawnEnemy() {
     return enemychoices[Math.floor(Math.random() * enemychoices.length)]
 }
 
-function log(message, type) {
-    const li = document.createElement("li")
-    if (type) {3
-        li.classList.add(type)
-    }
-    li.textContent = message
-    combatLogElement.appendChild(li)
-    if (combatLogElement.childNodes.length > 10) {
-        combatLogElement.removeChild(combatLogElement.firstChild)
-    }
-}
-
 let round
 let enemy = spawnEnemy()
+enemyHpElement.textContent = enemy.hp < 1 ? 0 : enemy.hp
+enemyNameElement.textContent = enemy.name < 1 ? 0 : enemy.name
 
-function gameRound() {    
+
+function runaway() {
+    enemy = spawnEnemy()
+    enemyHpElement.textContent = enemy.hp < 1 ? 0 : enemy.hp
+    enemyNameElement.textContent = enemy.name < 1 ? 0 : enemy.name
+    log(`Du springer iväg men just när du  har flytt stöter du på en ${enemy.name}!`, "enemy")
+}
+
+function gameRound() {
     const playerRoll = rollDice()
     const enemyRoll = rollDice()
     if (playerRoll > enemyRoll) {
-        const damage = playerRoll - enemyRoll
+        const damage = playerRoll - enemyRoll + 5
 
         const playerattacks = [
             `Du träffar han för ${damage} skada!`,
@@ -89,6 +99,7 @@ function gameRound() {
 
     if (playerHp < 1) {
             playButton.disabled = true
+            runawayButton.disabled = true
             log("Du Förlorade!")
     }
         if (enemy.hp < 1) {
@@ -119,3 +130,4 @@ function gameLoop(timestamp) {
 const combatLogElement = document.querySelector("#combat-log")
 
 playButton.addEventListener("click", gameRound)
+runawayButton.addEventListener("click", runaway)
